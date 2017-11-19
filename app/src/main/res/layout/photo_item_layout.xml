@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="90dp"
     android:layout_height="90dp">
@@ -10,4 +10,12 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop"/>
 
-</LinearLayout>
+    <RadioButton
+        android:id="@+id/photo_selected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:clickable="false"
+        android:layout_margin="2dp"/>
+
+</RelativeLayout>

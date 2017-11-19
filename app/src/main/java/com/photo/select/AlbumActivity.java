@@ -28,6 +28,7 @@ public class AlbumActivity extends AppCompatActivity implements IUpdateView<Albu
 
     private static final int REQUEST_PERMISSION = 0x1;
     private static final String EXTRA_PERMISSION = Manifest.permission.READ_EXTERNAL_STORAGE;
+    private static final String WRITE_EXTRA_PERMISSION = Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
     private RecyclerView mRecyclerView;
     private PhotoAdapter mAdapter;
@@ -49,7 +50,7 @@ public class AlbumActivity extends AppCompatActivity implements IUpdateView<Albu
         int permission = ActivityCompat.checkSelfPermission(this, EXTRA_PERMISSION);
         if (permission == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(this,
-                    new String[]{EXTRA_PERMISSION},
+                    new String[]{EXTRA_PERMISSION, WRITE_EXTRA_PERMISSION},
                     REQUEST_PERMISSION);
         } else {
             mPresenter.getAllAlbum();

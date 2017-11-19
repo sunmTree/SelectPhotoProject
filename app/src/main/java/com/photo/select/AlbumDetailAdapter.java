@@ -6,10 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 
 import com.bumptech.glide.Glide;
 import com.photo.AppConfig;
 import com.photo.bean.PhotoBean;
+import com.photo.model.OnItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,7 @@ public class AlbumDetailAdapter extends RecyclerView.Adapter<AlbumDetailAdapter.
 
     private Context mContext;
     private List<PhotoBean> mPhotoList;
+    private OnItemClickListener mItemClickListener;
 
     public AlbumDetailAdapter(Context context) {
         this.mContext = context;
@@ -38,6 +41,14 @@ public class AlbumDetailAdapter extends RecyclerView.Adapter<AlbumDetailAdapter.
         notifyDataSetChanged();
     }
 
+    public List<PhotoBean> getDatas() {
+        return mPhotoList;
+    }
+
+    public void setItemClickListener(OnItemClickListener listener) {
+        this.mItemClickListener = listener;
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.photo_item_layout, parent, false);
@@ -45,11 +56,21 @@ public class AlbumDetailAdapter extends RecyclerView.Adapter<AlbumDetailAdapter.
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         PhotoBean photoBean = mPhotoList.get(position);
         Glide.with(mContext)
                 .load(photoBean.getFilePath())
                 .into(holder.mImage);
+        if (mItemClickListener != null) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mItemClickListener.onItemClick(v, position);
+                    boolean checked = holder.mRadioButton.isChecked();
+                    holder.mRadioButton.setChecked(!checked);
+                }
+            });
+        }
     }
 
     @Override
@@ -59,10 +80,12 @@ public class AlbumDetailAdapter extends RecyclerView.Adapter<AlbumDetailAdapter.
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView mImage;
+        private RadioButton mRadioButton;
 
         public ViewHolder(View itemView) {
             super(itemView);
             mImage = (ImageView) itemView.findViewById(R.id.photo_img);
+            mRadioButton = (RadioButton) itemView.findViewById(R.id.photo_selected);
         }
     }
 }
